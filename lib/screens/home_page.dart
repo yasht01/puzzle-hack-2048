@@ -43,25 +43,29 @@ class HomePage extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               color: kGameBoardColor,
             ),
-            constraints: BoxConstraints.tight(const Size.square(450)),
-            child: GridView.count(
-              physics: const NeverScrollableScrollPhysics(),
-              crossAxisCount: 4,
-              children: List.generate(
-                16,
-                (index) => Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Material(
-                    elevation: 2,
-                    borderRadius: BorderRadius.circular(20),
-                    color: const Color(0xffefe5da),
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          "${pow(2, index)}",
-                          style: kTextStyle,
+            child: MediaQuery.removePadding(
+              context: context,
+              removeTop: true,
+              child: GridView.count(
+                physics: const NeverScrollableScrollPhysics(),
+                crossAxisCount: 4,
+                shrinkWrap: true,
+                children: List.generate(
+                  16,
+                  (index) => Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Material(
+                      elevation: 2,
+                      borderRadius: BorderRadius.circular(20),
+                      color: const Color(0xffefe5da),
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "${pow(2, index)}",
+                            style: kTextStyle,
+                          ),
                         ),
                       ),
                     ),
