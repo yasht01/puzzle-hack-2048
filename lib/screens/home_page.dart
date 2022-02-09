@@ -68,41 +68,80 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class GameBoard extends StatelessWidget {
+class GameBoard extends StatefulWidget {
   const GameBoard({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<GameBoard> createState() => _GameBoardState();
+}
+
+class _GameBoardState extends State<GameBoard> {
+  List<List<int>> _boardData = [
+    [0, 1, -1, -1],
+    [1, -1, -1, -1],
+    [-1, -1, -1, -1],
+    [-1, -1, -1, -1]
+  ];
+
+  final _crossAxisCount = 4;
+
+  void _moveRight() {
+    setState(() {
+      _boardData[0][1] = -1;
+      _boardData[0][3] = 1;
+    });
+  }
+
+  void _moveLeft() {
+    setState(() {
+      _boardData[0][3] = -1;
+      _boardData[0][1] = 1;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(seconds: 1),
       margin: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         color: kGameBoardColor,
       ),
-      child: MediaQuery.removePadding(
-        context: context,
-        removeTop: true,
-        child: GridView.count(
-          physics: const NeverScrollableScrollPhysics(),
-          crossAxisCount: 4,
-          shrinkWrap: true,
-          children: List.generate(
-            16,
-            (index) => Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Material(
-                elevation: 2,
-                borderRadius: BorderRadius.circular(20),
-                color: const Color(0xffefe5da),
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "${pow(2, index)}",
-                      style: kTextStyle,
+      child: GestureDetector(
+        onHorizontalDragEnd: (details) {
+          if(details.primaryVelocity != null && details.primaryVelocity! > 0.0) {
+            _moveRight();
+          } else if(details.primaryVelocity != null && details.primaryVelocity! < 0.0) {
+            _moveLeft();
+          }
+          print(details.primaryVelocity);
+        },
+        child: MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          child: GridView.count(
+            physics: const NeverScrollableScrollPhysics(),
+            crossAxisCount: _crossAxisCount,
+            shrinkWrap: true,
+            children: List.generate(
+              16,
+              (index) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Material(
+                  elevation: 2,
+                  borderRadius: BorderRadius.circular(20),
+                  color: _boardData[index ~/ _crossAxisCount][index % _crossAxisCount] != -1 ? const Color(0xffefe5da) : const Color(0xffd6cdc4),
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        _boardData[index ~/ _crossAxisCount][index % _crossAxisCount] != -1 ? "${pow(2, Random().nextInt(11))}" : "",
+                        style: kTextStyle,
+                      ),
                     ),
                   ),
                 ),
