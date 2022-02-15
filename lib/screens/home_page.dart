@@ -2,7 +2,7 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:puzzle_2048/constants.dart';
+import '../constants.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,50 +20,52 @@ class HomePage extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 60),
-            child: Column(
-              children: const [
-                Text(
-                  'Score',
-                  style: kTextStyle,
-                ),
-                Text(
-                  '0',
-                  style: kTextStyle,
-                ),
-              ],
-            ),
-          ),
-          const GameBoard(),
-          Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Undo',
-                    style: kTextStyle.copyWith(color: Colors.white),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 60),
+              child: Column(
+                children: const [
+                  Text(
+                    'Score',
+                    style: kTextStyle,
                   ),
-                  style: kButtonStyle,
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'New Game',
-                    style: kTextStyle.copyWith(color: Colors.white),
+                  Text(
+                    '0',
+                    style: kTextStyle,
                   ),
-                  style: kButtonStyle,
-                )
-              ],
+                ],
+              ),
             ),
-          )
-        ],
+            const GameBoard(),
+            Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'Undo',
+                      style: kTextStyle.copyWith(color: Colors.white),
+                    ),
+                    style: kButtonStyle,
+                  ),
+                  TextButton(
+                    onPressed: () {},
+                    child: Text(
+                      'New Game',
+                      style: kTextStyle.copyWith(color: Colors.white),
+                    ),
+                    style: kButtonStyle,
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -182,7 +184,7 @@ class Tile extends StatelessWidget {
                   : const Color(0xffd6cdc4),
               child: Container(
                 padding: const EdgeInsets.all(8.0),
-                constraints: BoxConstraints(
+                constraints: const BoxConstraints(
                   minHeight: 80,
                   minWidth: 80,
                 ),
