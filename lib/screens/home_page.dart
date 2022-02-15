@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -77,7 +78,12 @@ class GameBoard extends StatefulWidget {
   State<GameBoard> createState() => _GameBoardState();
 }
 
-class _GameBoardState extends State<GameBoard> {
+class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(seconds: 2),
+    vsync: this,
+  );
+
   List<List<int>> _boardData = [
     [0, 1, -1, -1],
     [1, -1, -1, -1],
@@ -110,40 +116,83 @@ class _GameBoardState extends State<GameBoard> {
         borderRadius: BorderRadius.circular(20),
         color: kGameBoardColor,
       ),
+      constraints: BoxConstraints(minHeight: 400, minWidth: 400),
       child: GestureDetector(
         onHorizontalDragEnd: (details) {
-          if(details.primaryVelocity != null && details.primaryVelocity! > 0.0) {
+          if (details.primaryVelocity != null &&
+              details.primaryVelocity! > 0.0) {
             _moveRight();
-          } else if(details.primaryVelocity != null && details.primaryVelocity! < 0.0) {
+          } else if (details.primaryVelocity != null &&
+              details.primaryVelocity! < 0.0) {
             _moveLeft();
           }
-          print(details.primaryVelocity);
         },
         child: MediaQuery.removePadding(
           context: context,
           removeTop: true,
-          child: GridView.count(
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: _crossAxisCount,
-            shrinkWrap: true,
+          child: Stack(
             children: List.generate(
               16,
-              (index) => Padding(
+              (index) => Tile(
+                  boardData: _boardData,
+                  crossAxisCount: _crossAxisCount,
+                  tileIndex: index),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class Tile extends StatelessWidget {
+  const Tile({
+    Key? key,
+    required List<List<int>> boardData,
+    required int crossAxisCount,
+    required int tileIndex,
+  })  : _boardData = boardData,
+        _crossAxisCount = crossAxisCount,
+        _tileIndex = tileIndex,
+        super(key: key);
+
+  final List<List<int>> _boardData;
+  final int _crossAxisCount;
+  final int _tileIndex;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) => Container(
+        height: 400,
+        width: constraints.maxWidth,
+        child: AnimatedAlign(
+          alignment:
+              FractionalOffset(Random().nextDouble(), Random().nextDouble()),
+          duration: const Duration(seconds: 1),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Material(
+              elevation: 2,
+              borderRadius: BorderRadius.circular(20),
+              color: _boardData[_tileIndex ~/ _crossAxisCount]
+                          [_tileIndex % _crossAxisCount] !=
+                      -1
+                  ? const Color(0xffefe5da)
+                  : const Color(0xffd6cdc4),
+              child: Container(
                 padding: const EdgeInsets.all(8.0),
-                child: Material(
-                  elevation: 2,
-                  borderRadius: BorderRadius.circular(20),
-                  color: _boardData[index ~/ _crossAxisCount][index % _crossAxisCount] != -1 ? const Color(0xffefe5da) : const Color(0xffd6cdc4),
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        _boardData[index ~/ _crossAxisCount][index % _crossAxisCount] != -1 ? "${pow(2, Random().nextInt(11))}" : "",
-                        style: kTextStyle,
-                      ),
-                    ),
-                  ),
+                constraints: BoxConstraints(
+                  minHeight: 80,
+                  minWidth: 80,
+                ),
+                child: Text(
+                  _boardData[_tileIndex ~/ _crossAxisCount]
+                              [_tileIndex % _crossAxisCount] !=
+                          -1
+                      ? "${pow(2, Random().nextInt(11))}"
+                      : "",
+                  style: kTextStyle,
                 ),
               ),
             ),
