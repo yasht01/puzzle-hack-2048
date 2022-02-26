@@ -118,7 +118,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
         borderRadius: BorderRadius.circular(20),
         color: kGameBoardColor,
       ),
-      constraints: BoxConstraints(minHeight: 400, minWidth: 400),
+      constraints: const BoxConstraints(minHeight: 400, minWidth: 400),
       child: GestureDetector(
         onHorizontalDragEnd: (details) {
           if (details.primaryVelocity != null &&
@@ -164,13 +164,15 @@ class Tile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final gridSize = 400.0;
+    final boxSize = (gridSize / 4) - (2 * 8.0);
     return LayoutBuilder(
       builder: (context, constraints) => Container(
-        height: 400,
-        width: constraints.maxWidth,
+        height: gridSize,
+        width: gridSize,
         child: AnimatedAlign(
-          alignment:
-              FractionalOffset(Random().nextDouble(), Random().nextDouble()),
+          alignment: FractionalOffset((_tileIndex ~/ _crossAxisCount) / 3,
+              (_tileIndex % _crossAxisCount) / 3),
           duration: const Duration(seconds: 1),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
