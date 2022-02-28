@@ -1,7 +1,7 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:puzzle_2048/components/tile.dart';
 import '../constants.dart';
 
 class HomePage extends StatelessWidget {
@@ -81,125 +81,92 @@ class GameBoard extends StatefulWidget {
 }
 
 class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(
-    duration: const Duration(seconds: 2),
-    vsync: this,
-  );
+  // late final AnimationController _controller = AnimationController(
+  //   duration: const Duration(seconds: 2),
+  //   vsync: this,
+  // );
 
-  List<List<int>> _boardData = [
-    [0, 1, -1, -1],
-    [1, -1, -1, -1],
-    [-1, -1, -1, -1],
-    [-1, -1, -1, -1]
-  ];
+  List<List<Tile>> grid =
+      List.generate(4, (x) => List.generate(4, (y) => Tile(x: x, y: y)));
+  Iterable<Tile> get flattenedGrid => grid.expand((element) => element);
 
-  final _crossAxisCount = 4;
+  // void _moveRight() {
+  //   setState(() {
+  //     _boardData[0][1] = -1;
+  //     _boardData[0][3] = 1;
+  //     _tileData[1][0] = const FractionalOffset(3 / 3, 0 / 3);
+  //     _tileData[3][0] = const FractionalOffset(1 / 3, 0 / 3);
+  //   });
+  // }
 
-  void _moveRight() {
-    setState(() {
-      _boardData[0][1] = -1;
-      _boardData[0][3] = 1;
-    });
-  }
-
-  void _moveLeft() {
-    setState(() {
-      _boardData[0][3] = -1;
-      _boardData[0][1] = 1;
-    });
-  }
+  // void _moveLeft() {
+  //   setState(() {
+  //     _boardData[0][3] = -1;
+  //     _boardData[0][1] = 1;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(seconds: 1),
-      margin: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        color: kGameBoardColor,
-      ),
-      constraints: const BoxConstraints(minHeight: 400, minWidth: 400),
-      child: GestureDetector(
-        onHorizontalDragEnd: (details) {
-          if (details.primaryVelocity != null &&
-              details.primaryVelocity! > 0.0) {
-            _moveRight();
-          } else if (details.primaryVelocity != null &&
-              details.primaryVelocity! < 0.0) {
-            _moveLeft();
-          }
-        },
-        child: MediaQuery.removePadding(
-          context: context,
-          removeTop: true,
-          child: Stack(
-            children: List.generate(
-              16,
-              (index) => Tile(
-                  boardData: _boardData,
-                  crossAxisCount: _crossAxisCount,
-                  tileIndex: index),
+    final gridSize = MediaQuery.of(context).size.height * 0.6;
+    final tileSize = gridSize / 4 - 2 * 4.0;
+    List<Positioned> stackItems = [];
+    stackItems.addAll(
+      flattenedGrid.map(
+        (e) => Positioned(
+          left: e.x * tileSize,
+          top: e.y * tileSize,
+          width: tileSize,
+          height: tileSize,
+          child: Center(
+            child: Material(
+              elevation: 2,
+              borderRadius: BorderRadius.circular(20),
+              color: const Color(0xffefe5d9),
+              child: Container(
+                width: tileSize - 2 * 4.0,
+                height: tileSize - 2 * 4.0,
+                padding: const EdgeInsets.all(8.0),
+                constraints:
+                    BoxConstraints.tight(Size.square(tileSize - 2 * 4.0)),
+                child: e.value != null 
+                    ? FittedBox(
+                        child: Text(
+                          e.value.toString(),
+                          style: kTextStyle,
+                        ),
+                      )
+                    : null,
+              ),
             ),
           ),
         ),
       ),
     );
-  }
-}
 
-class Tile extends StatelessWidget {
-  const Tile({
-    Key? key,
-    required List<List<int>> boardData,
-    required int crossAxisCount,
-    required int tileIndex,
-  })  : _boardData = boardData,
-        _crossAxisCount = crossAxisCount,
-        _tileIndex = tileIndex,
-        super(key: key);
-
-  final List<List<int>> _boardData;
-  final int _crossAxisCount;
-  final int _tileIndex;
-
-  @override
-  Widget build(BuildContext context) {
-    final gridSize = 400.0;
-    final boxSize = (gridSize / 4) - (2 * 8.0);
-    return LayoutBuilder(
-      builder: (context, constraints) => Container(
-        height: gridSize,
-        width: gridSize,
-        child: AnimatedAlign(
-          alignment: FractionalOffset((_tileIndex ~/ _crossAxisCount) / 3,
-              (_tileIndex % _crossAxisCount) / 3),
-          duration: const Duration(seconds: 1),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Material(
-              elevation: 2,
-              borderRadius: BorderRadius.circular(20),
-              color: _boardData[_tileIndex ~/ _crossAxisCount]
-                          [_tileIndex % _crossAxisCount] !=
-                      -1
-                  ? const Color(0xffefe5da)
-                  : const Color(0xffd6cdc4),
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                constraints: const BoxConstraints(
-                  minHeight: 80,
-                  minWidth: 80,
-                ),
-                child: Text(
-                  _boardData[_tileIndex ~/ _crossAxisCount]
-                              [_tileIndex % _crossAxisCount] !=
-                          -1
-                      ? "${pow(2, Random().nextInt(11))}"
-                      : "",
-                  style: kTextStyle,
-                ),
-              ),
-            ),
+    return Container(
+      margin: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        color: kGameBoardColor,
+      ),
+      constraints: BoxConstraints.tight(Size.square(gridSize)),
+      child: GestureDetector(
+        onHorizontalDragEnd: (details) {
+          // if (details.primaryVelocity != null &&
+          //     details.primaryVelocity! > 0.0) {
+          //   _moveRight();
+          // } else if (details.primaryVelocity != null &&
+          //     details.primaryVelocity! < 0.0) {
+          //   _moveLeft();
+          // }
+        },
+        child: MediaQuery.removePadding(
+          context: context,
+          removeTop: true,
+          child: Stack(
+            children: stackItems,
           ),
         ),
       ),
