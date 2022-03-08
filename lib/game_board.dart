@@ -80,7 +80,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                         child: FittedBox(
                           child: Text(
                             e.value.toString(),
-                            style: kTextStyle,
+                            style: kBoardStyle,
                           ),
                         ),
                       ),

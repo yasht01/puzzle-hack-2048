@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:puzzle_2048/components/tile.dart';
 import '../constants.dart';
 import '../game_board.dart';
 
@@ -26,14 +25,14 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 60),
               child: Column(
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'Score',
                     style: kTextStyle,
                   ),
                   Text(
                     '0',
-                    style: kTextStyle,
+                    style: kBoardStyle.copyWith(fontSize: 70),
                   ),
                 ],
               ),
@@ -46,20 +45,30 @@ class HomePage extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {},
-                    child: Text(
-                      'Undo',
-                      style: kTextStyle.copyWith(color: Colors.white),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        'Undo',
+                        style: kTextStyle,
+                      ),
                     ),
-                    style: kButtonStyle,
+                    style: kButtonStyle.copyWith(
+                        backgroundColor:
+                            MaterialStateProperty.all(kGameBoardColor)),
                   ),
                   const SizedBox(width: 50),
                   TextButton(
                     onPressed: () {},
-                    child: Text(
-                      'New Game',
-                      style: kTextStyle.copyWith(color: Colors.white),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        'New Game',
+                        style: kTextStyle,
+                      ),
                     ),
-                    style: kButtonStyle,
+                    style: kButtonStyle.copyWith(
+                        backgroundColor:
+                            MaterialStateProperty.all(kGameBoardColor)),
                   )
                 ],
               ),
