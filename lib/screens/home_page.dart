@@ -8,7 +8,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kScaffoldBackgroudColor,
+      backgroundColor: kModifiedScaffoldColor,
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(8.0),
         child: FloatingActionButton(
@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
                     ),
                     style: kButtonStyle.copyWith(
                         backgroundColor:
-                            MaterialStateProperty.all(kGameBoardColor)),
+                            MaterialStateProperty.all(kButtonBgColor)),
                   ),
                   const SizedBox(width: 50),
                   TextButton(
@@ -68,7 +68,7 @@ class HomePage extends StatelessWidget {
                     ),
                     style: kButtonStyle.copyWith(
                         backgroundColor:
-                            MaterialStateProperty.all(kGameBoardColor)),
+                            MaterialStateProperty.all(kButtonBgColor)),
                   )
                 ],
               ),
