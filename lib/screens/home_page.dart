@@ -41,7 +41,7 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   TextButton(
                     onPressed: () {},
@@ -51,6 +51,7 @@ class HomePage extends StatelessWidget {
                     ),
                     style: kButtonStyle,
                   ),
+                  const SizedBox(width: 50),
                   TextButton(
                     onPressed: () {},
                     child: Text(
