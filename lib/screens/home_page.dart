@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:puzzle_2048/components/tile.dart';
 import '../constants.dart';
 import '../game_board.dart';
 
@@ -42,7 +41,7 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   TextButton(
                     onPressed: () {},
@@ -52,7 +51,6 @@ class HomePage extends StatelessWidget {
                     ),
                     style: kButtonStyle,
                   ),
-                  const SizedBox(width: 50),
                   TextButton(
                     onPressed: () {},
                     child: Text(
