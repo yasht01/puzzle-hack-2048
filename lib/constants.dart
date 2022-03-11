@@ -6,6 +6,8 @@ const Color kGameBoardColor = Color(0xffbbad9f);
 var kButtonStyle = TextButton.styleFrom(
   backgroundColor: const Color(0xff907a65),
   elevation: 4,
+  splashFactory: InkRipple.splashFactory,
+  primary: const Color(0xffd6cdc4),
 );
 
 const TextStyle kTextStyle = TextStyle(
