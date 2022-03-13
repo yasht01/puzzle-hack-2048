@@ -71,7 +71,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     final tileSize = gridSize / 4 - 2 * 4.0;
     List<Widget> stackItems = [];
     stackItems.addAll(
-      flattenedGrid.map(
+      flattenedGrid.map(        
         (e) => Positioned(
           left: e.x * tileSize,
           top: e.y * tileSize,
@@ -83,7 +83,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
               height: tileSize - 2 * 4.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Color(0xffccbfb2),
+                color: Color(0xffefe5d9),
               ),
             ),
           ),

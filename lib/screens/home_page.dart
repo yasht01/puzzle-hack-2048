@@ -8,7 +8,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: kScaffoldBackgroudColor,
+      backgroundColor: kModifiedScaffoldColor,
       floatingActionButton: Padding(
         padding: const EdgeInsets.all(8.0),
         child: FloatingActionButton(
@@ -25,14 +25,14 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 60),
               child: Column(
-                children: const [
-                  Text(
+                children: [
+                  const Text(
                     'Score',
                     style: kTextStyle,
                   ),
                   Text(
                     '0',
-                    style: kTextStyle,
+                    style: kBoardStyle.copyWith(fontSize: 70),
                   ),
                 ],
               ),
@@ -45,19 +45,29 @@ class HomePage extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {},
-                    child: Text(
-                      'Undo',
-                      style: kTextStyle.copyWith(color: Colors.white),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        'Undo',
+                        style: kTextStyle,
+                      ),
                     ),
-                    style: kButtonStyle,
+                    style: kButtonStyle.copyWith(
+                        backgroundColor:
+                            MaterialStateProperty.all(kButtonBgColor)),
                   ),
                   TextButton(
                     onPressed: () {},
-                    child: Text(
-                      'New Game',
-                      style: kTextStyle.copyWith(color: Colors.white),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        'New Game',
+                        style: kTextStyle,
+                      ),
                     ),
-                    style: kButtonStyle,
+                    style: kButtonStyle.copyWith(
+                        backgroundColor:
+                            MaterialStateProperty.all(kButtonBgColor)),
                   )
                 ],
               ),

@@ -1,6 +1,6 @@
 name: puzzle_2048
 description: A 2048 game.
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.0+1
 environment:
   sdk: ">=2.15.1 <3.0.0"
@@ -31,6 +31,15 @@ flutter:
           weight: 400
         - asset: assets/fonts/Quicksand-Light.ttf
           weight: 300
+    - family: Circus
+      fonts:
+        - asset: assets/fonts/Circus.ttf
+    - family: Deftone Stylus
+      fonts:
+        - asset: assets/fonts/deftone stylus.ttf
+    - family: Franchise
+      fonts:
+        - asset: assets/fonts/Franchise.ttf
 
   # To add assets to your application, add an assets section, like this:
   # assets:
