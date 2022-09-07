@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../constants.dart';
 import '../game_board.dart';
+import '../models/user_data.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -22,21 +24,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 60),
-              child: Column(
-                children: [
-                  const Text(
-                    'Score',
-                    style: kTextStyle,
-                  ),
-                  Text(
-                    '0',
-                    style: kBoardStyle.copyWith(fontSize: 70),
-                  ),
-                ],
-              ),
-            ),
+            UserScoreWidget(),
             const GameBoard(),
             Padding(
               padding: const EdgeInsets.all(20.0),
@@ -74,6 +62,38 @@ class HomePage extends StatelessWidget {
             )
           ],
         ),
+      ),
+    );
+  }
+}
+
+final userScoreProvider = StateProvider<UserData>((ref) => UserData(score: 0));
+
+class UserScoreWidget extends StatelessWidget {
+  const UserScoreWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 60),
+      child: Column(
+        children: [
+          const Text(
+            'Score',
+            style: kTextStyle,
+          ),
+          Consumer(
+            builder: ((context, ref, child) {
+              final userScore = ref.watch<UserData>(userScoreProvider).score;
+              return Text(
+                userScore.toString(),
+                style: kBoardStyle.copyWith(fontSize: 70),
+              );
+            }),
+          ),
+        ],
       ),
     );
   }
