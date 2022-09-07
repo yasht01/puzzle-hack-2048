@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:puzzle_2048/models/user_data.dart';
 
 import '../utils/constants.dart';
 import 'components/tile.dart';
@@ -248,6 +250,7 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
           firstNonZeroTile.moveTo(_controller, tiles[i].x, tiles[i].y);
           if (secondNonZeroTile.value != -1) {
             newValue += secondNonZeroTile.value;
+            
             secondNonZeroTile.moveTo(_controller, tiles[i].x, tiles[i].y);
             secondNonZeroTile.bounce(_controller);
             secondNonZeroTile.changeNumber(_controller, newValue);
