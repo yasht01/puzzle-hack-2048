@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:puzzle_2048/models/user_data.dart';
+import 'package:puzzle_2048/providers/user_data_provider.dart';
 
-import '../utils/constants.dart';
-import 'components/tile.dart';
-import 'constants.dart';
+import '../../../utils/constants.dart';
+import '../../components/tile.dart';
 
-class GameBoard extends StatefulWidget {
+class GameBoard extends ConsumerStatefulWidget {
   const GameBoard({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<GameBoard> createState() => _GameBoardState();
+  ConsumerState<GameBoard> createState() => _GameBoardState();
 }
 
-class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
+class _GameBoardState extends ConsumerState<GameBoard> with TickerProviderStateMixin {
   late AnimationController _controller;
 
   List<List<Tile>> grid = List.generate(
@@ -250,7 +249,9 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
           firstNonZeroTile.moveTo(_controller, tiles[i].x, tiles[i].y);
           if (secondNonZeroTile.value != -1) {
             newValue += secondNonZeroTile.value;
-            
+            ref.read(userScoreProvider).score += newValue;
+            print(ref.read(userScoreProvider).score);
+            ref.refresh(userScoreProvider);
             secondNonZeroTile.moveTo(_controller, tiles[i].x, tiles[i].y);
             secondNonZeroTile.bounce(_controller);
             secondNonZeroTile.changeNumber(_controller, newValue);

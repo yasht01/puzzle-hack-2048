@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'screens/home_page.dart';
+import 'utils/constants.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,10 +17,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: '2048',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          splashColor: const Color(0xffd6cdc4),
-        ),
+        theme: kThemeData,
         home: const HomePage(),
       ),
     );

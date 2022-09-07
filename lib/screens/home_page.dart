@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../constants.dart';
-import '../game_board.dart';
+
+import '../utils/constants.dart';
+import '../providers/user_data_provider.dart';
+import 'widgets/game_board_widget.dart';
 import '../models/user_data.dart';
 
 class HomePage extends StatelessWidget {
@@ -24,7 +26,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            UserScoreWidget(),
+            const UserScoreWidget(),
             const GameBoard(),
             Padding(
               padding: const EdgeInsets.all(20.0),
@@ -33,29 +35,31 @@ class HomePage extends StatelessWidget {
                 children: [
                   TextButton(
                     onPressed: () {},
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         'Undo',
-                        style: kTextStyle,
+                        style: kTextStyle.copyWith(fontSize: 40),
                       ),
                     ),
                     style: kButtonStyle.copyWith(
-                        backgroundColor:
-                            MaterialStateProperty.all(kButtonBgColor)),
+                      backgroundColor:
+                          MaterialStateProperty.all(kButtonBgColor),
+                    ),
                   ),
                   TextButton(
                     onPressed: () {},
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(
                         'New Game',
-                        style: kTextStyle,
+                        style: kTextStyle.copyWith(fontSize: 40),
                       ),
                     ),
                     style: kButtonStyle.copyWith(
-                        backgroundColor:
-                            MaterialStateProperty.all(kButtonBgColor)),
+                      backgroundColor:
+                          MaterialStateProperty.all(kButtonBgColor),
+                    ),
                   )
                 ],
               ),
@@ -66,8 +70,6 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
-final userScoreProvider = StateProvider<UserData>((ref) => UserData(score: 0));
 
 class UserScoreWidget extends StatelessWidget {
   const UserScoreWidget({
