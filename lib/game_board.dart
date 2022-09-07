@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
+import '../utils/constants.dart';
 import 'components/tile.dart';
 import 'constants.dart';
 
@@ -15,8 +15,6 @@ class GameBoard extends StatefulWidget {
 
 class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
   late AnimationController _controller;
-  final ScrollController _scrollController = ScrollController();
-  final FocusNode _focusNode = FocusNode();
 
   List<List<Tile>> grid = List.generate(
       4, (y) => List.generate(4, (x) => Tile(x: x, y: y, value: 0)));
@@ -36,9 +34,9 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
     _controller.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        toAdd.forEach((element) {
+        for (var element in toAdd) {
           grid[element.x][element.y].value = element.value;
-        });
+        }
         for (var element in flattenedGrid) {
           element.resetAnimations();
         }
@@ -47,11 +45,11 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     });
 
     grid[1][1].value = 2;
-    grid[1][2].value = 8;
+    // grid[1][2].value = 8;
     grid[0][2].value = 2;
-    grid[0][0].value = 16;
-    grid[0][1].value = 16;
-    grid[1][0].value = 32;
+    // grid[0][0].value = 16;
+    // grid[0][1].value = 16;
+    // grid[1][0].value = 32;
 
     for (var tile in flattenedGrid) {
       tile.resetAnimations();
@@ -60,14 +58,13 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+    _controller.dispose();
     super.dispose();
-    _focusNode.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final gridSize = MediaQuery.of(context).size.height * 0.6 - 2 * 20.0;
+    final gridSize = MediaQuery.of(context).size.width * 0.9;
     final tileSize = gridSize / 4 - 2 * 4.0;
     List<Widget> stackItems = [];
     stackItems.addAll(
@@ -82,8 +79,8 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
               width: tileSize - 2 * 4.0,
               height: tileSize - 2 * 4.0,
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Color(0xffefe5d9),
+                borderRadius: BorderRadius.circular(kTileBorderRadius),
+                color: const Color(0xffefe5d9),
               ),
             ),
           ),
@@ -104,7 +101,8 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
                       child: Center(
                         child: Material(
                           elevation: 2,
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius:
+                              BorderRadius.circular(kTileBorderRadius),
                           color: const Color(0xffefe5d9),
                           child: Container(
                             width: (tileSize - 2 * 4.0) * e.scale.value,
@@ -134,9 +132,9 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
         color: kGameBoardColor,
       ),
       constraints: BoxConstraints.tight(Size.square(gridSize)),
-      child: RawKeyboardListener(
-        focusNode: _focusNode,
-        onKey: _handleKeyEvent,
+      child: GestureDetector(
+        onHorizontalDragEnd: onHorizontalDragEnd,
+        onVerticalDragEnd: onVerticalDragEnd,
         child: MediaQuery.removePadding(
           context: context,
           removeTop: true,
@@ -148,20 +146,38 @@ class _GameBoardState extends State<GameBoard> with TickerProviderStateMixin {
     );
   }
 
-  void _handleKeyEvent(RawKeyEvent event) {
-    if (event.logicalKey == LogicalKeyboardKey.arrowUp && canSwipeUp()) {
-      swipe(swipeUp);
-    } else if (event.logicalKey == LogicalKeyboardKey.arrowDown &&
-        canSwipeDown()) {
-      swipe(swipeDown);
-    } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft &&
-        canSwipeLeft()) {
+  void onHorizontalDragEnd(DragEndDetails details) {
+    if (details.primaryVelocity! < 0 && canSwipeLeft()) {
       swipe(swipeLeft);
-    } else if (event.logicalKey == LogicalKeyboardKey.arrowRight &&
-        canSwipeRight()) {
+    } else if (details.primaryVelocity! > 0 && canSwipeRight()) {
       swipe(swipeRight);
     }
   }
+
+  void onVerticalDragEnd(DragEndDetails details) {
+    if (details.primaryVelocity! > 0 && canSwipeDown()) {
+      swipe(swipeDown);
+    } else if (details.primaryVelocity! < 0 && canSwipeUp()) {
+      swipe(swipeUp);
+    }
+  }
+
+  //TODO: Add web support
+
+  // void _handleKeyEvent(RawKeyEvent event) {
+  //   if (event.logicalKey == LogicalKeyboardKey.arrowUp && canSwipeUp()) {
+  //     swipe(swipeUp);
+  //   } else if (event.logicalKey == LogicalKeyboardKey.arrowDown &&
+  //       canSwipeDown()) {
+  //     swipe(swipeDown);
+  //   } else if (event.logicalKey == LogicalKeyboardKey.arrowLeft &&
+  //       canSwipeLeft()) {
+  //     swipe(swipeLeft);
+  //   } else if (event.logicalKey == LogicalKeyboardKey.arrowRight &&
+  //       canSwipeRight()) {
+  //     swipe(swipeRight);
+  //   }
+  // }
 
   void swipe(void Function() swipeFn) {
     setState(() {

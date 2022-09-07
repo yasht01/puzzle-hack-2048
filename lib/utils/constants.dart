@@ -1,0 +1,1 @@
+const kTileBorderRadius = 10.0;
