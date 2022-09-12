@@ -1,5 +1,9 @@
-class UserData {
-  int score;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-  UserData({required this.score});
+class UserDataNotifier extends StateNotifier<int> {
+  UserDataNotifier() : super(0);
+
+  void add(int score) {
+    state += score;
+  }
 }

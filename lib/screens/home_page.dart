@@ -88,7 +88,7 @@ class UserScoreWidget extends StatelessWidget {
           ),
           Consumer(
             builder: ((context, ref, child) {
-              final userScore = ref.watch<UserData>(userScoreProvider).score;
+              final userScore = ref.watch<int>(userScoreProvider);
               return Text(
                 userScore.toString(),
                 style: kBoardStyle.copyWith(fontSize: 70),

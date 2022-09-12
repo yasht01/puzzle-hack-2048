@@ -249,9 +249,7 @@ class _GameBoardState extends ConsumerState<GameBoard> with TickerProviderStateM
           firstNonZeroTile.moveTo(_controller, tiles[i].x, tiles[i].y);
           if (secondNonZeroTile.value != -1) {
             newValue += secondNonZeroTile.value;
-            ref.read(userScoreProvider).score += newValue;
-            print(ref.read(userScoreProvider).score);
-            ref.refresh(userScoreProvider);
+            ref.read(userScoreProvider.notifier).add(newValue);
             secondNonZeroTile.moveTo(_controller, tiles[i].x, tiles[i].y);
             secondNonZeroTile.bounce(_controller);
             secondNonZeroTile.changeNumber(_controller, newValue);
